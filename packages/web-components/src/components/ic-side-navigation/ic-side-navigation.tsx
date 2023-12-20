@@ -1,27 +1,27 @@
 import {
   Component,
+  Element,
   Host,
-  h,
+  Listen,
   Prop,
   State,
-  Element,
-  Listen,
+  h,
 } from "@stencil/core";
 
-import menuIcon from "../../assets/hamburger-menu-icon.svg";
-import closeIcon from "../../assets/close-icon.svg";
 import chevronIcon from "../../assets/chevron-icon.svg";
+import closeIcon from "../../assets/close-icon.svg";
+import menuIcon from "../../assets/hamburger-menu-icon.svg";
 import {
-  getCurrentDeviceSize,
   DEVICE_SIZES,
   checkResizeObserver,
-  isSlotUsed,
-  getThemeForegroundColor,
   getCssProperty,
-  hasClassificationBanner,
-  onComponentRequiredPropUndefined,
+  getCurrentDeviceSize,
+  getThemeForegroundColor,
+  hasClassificationBannerType,
   isEmptyString,
   isPropDefined,
+  isSlotUsed,
+  onComponentRequiredPropUndefined
 } from "../../utils/helpers";
 import {
   IcTheme,
@@ -738,6 +738,7 @@ export class SideNavigation {
           ["collapsed-labels"]:
             !isSDevice && !menuExpanded && collapsedIconLabels,
           ["inline"]: inline,
+          ["classification-spacing-top"]: hasClassificationBannerType("top")
         }}
       >
         {isSDevice && this.renderTopBar({ ...topBarProps })}
@@ -765,7 +766,8 @@ export class SideNavigation {
           <div
             class={{
               ["bottom-wrapper"]: true,
-              ["classification-spacing"]: hasClassificationBanner(),
+              // We want the even when there is just a top banner to offset the padding set by the top banner
+              ["classification-spacing-bottom"]: hasClassificationBannerType("notInline"),
             }}
           >
             {isSlotUsed(this.el, "secondary-navigation") && (
